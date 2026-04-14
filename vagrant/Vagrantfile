@@ -1,0 +1,25 @@
+CA_IP = “10.0.0.1”
+WEBSERVER_IP = “10.0.0.2”
+CLIENT_IP = “10.0.0.3”
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bookworm64"
+
+  config.vm.define "ca" do |ca|
+    ca.vm.hostname = "ca"
+    ca.vm.network "private_network", ip: "CA_IP",
+      virtualbox__intnet: "labnet"
+  end
+
+  config.vm.define "webserver" do |web|
+    web.vm.hostname = "webserver"
+    web.vm.network "private_network", ip: "WEBSERVER_IP",
+      virtualbox__intnet: "labnet"
+  end
+
+  config.vm.define "client" do |cl|
+    cl.vm.hostname = "client"
+    cl.vm.network "private_network", ip: "CLIENT_IP",
+      virtualbox__intnet: "labnet"
+  end
+end

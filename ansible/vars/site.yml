@@ -1,0 +1,9 @@
+site.yml
+- hosts: ca
+  roles: [ca]
+
+- hosts: webserver
+  roles: [webserver]
+
+- hosts: client
+  roles: [client]
