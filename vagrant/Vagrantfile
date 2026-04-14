@@ -1,51 +1,54 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-CA_IP   =   "10.0.0.1"
-WEBSERVER_IP    =   "10.0.0.2"
-CLIENT_IP   = "10.0.0.3"
+# Deklarering av variabler
+CA_IP = "10.0.0.1"
+WEBSERVER_IP = "10.0.0.2"
+CLIENT_IP = "10.0.0.3"
 
 Vagrant.configure("2") do |config|
-    config.vm.box = "ubuntu/jammy64"
+	config.vm.box = "ubuntu/jammy64"
 
-    # VM 1: Certificate Authority
-    config.vm.define "ca" do |ca|
-        ca.vm.hostname = "ca"
-        ca.vm.network "private_network", ip: "CA_IP"
-        ca.vm.provider "virtualbox" do |vb|
-          vb.name = "ca"
-          vb.memory = 512
-          vb.cpus = 1
-        end
-        ca.vm.provision "shell", inline: <<-SHELL
-            echo "=== CA klar ==="
-        SHELL
-    end
+	# VM 1: Certificate Authority
+	config.vm.define "ca" do |ca|
+		ca.vm.hostname = "ca"
+		ca.vm.network "private_network", ip: CA_IP
+		ca.vm.provider "virtualbox" do |vb|
+			vb.name = "ca"
+			vb.memory = 512
+			vb.cpus = 1
+		end #Avslutar VB-konf
+		ca.vm.provision "shell", inline: <<-SHELL
+		echo "=== CA klar ===" #Markör för att visa att CAn är klar
+		SHELL
+	end #Avslutar VM1
 
-    # VM 2: Webserver
-    config.vm.define "webserver" do |web|
-        web.vm.hostname = "webserver"
-        web.vm.network "private_network", ip: "WEBSERVER_IP"
-        ca.vm.provider "virtualbox" do |vb|
-            vb.name = "webserver"
-            vb.memory = 512
-            vb.cpus = 1
 
-        webserver.vm.provision "shell", inline: <<-SHELL
-            echo "=== Webserver klar ==="
-        SHELL
-    end
+	# VM 2: Webserver
+	config.vm.define "webserver" do |web|
+		web.vm.hostname = "webserver"
+		web.vm.network "private_network", ip: WEBSERVER_IP
+		web.vm.provider "virtualbox" do |vb|
+			vb.name = "webserver"
+			vb.memory = 512
+			vb.cpus = 1
+        end #Avslutar VB-konf
+		web.vm.provision "shell", inline: <<-SHELL
+		echo "=== Webserver klar ===" #Markör för att visa att webserver är klar
+		SHELL
+	end #Avslutar vm2
 
-    # VM3: Client
-    config.vm.define "client" do |cl|
-        cl.vm.hostname = "client"
-        cl.vm.network "private_network", ip: "CLIENT_IP"
-        cl.vm.provider "virtualbox" do |vb|
-            vb.name = "client"
-            vb.memory = 512
-            vb.cpus = 1
-        client.vm.provision "shell", inline: <<-SHELL
-            echo "=== Client klar ==="
-        SHELL
-    end
-end
+	# VM3: Client
+	config.vm.define "client" do |cl|
+		cl.vm.hostname = "client"
+		cl.vm.network "private_network", ip: CLIENT_IP
+		cl.vm.provider "virtualbox" do |vb|
+			vb.name = "client"
+			vb.memory = 512
+			vb.cpus = 1
+		end #Avslutar VB-konf
+		cl.vm.provision "shell", inline: <<-SHELL
+		echo "=== Client klar ===" #Markör för att visa att client är klar
+		SHELL
+	end #Avslutar VM3
+end #Avslutar hela Vagrant
