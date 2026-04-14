@@ -1,6 +1,6 @@
-CA_IP = “10.0.0.1”
-WEBSERVER_IP = “10.0.0.2”
-CLIENT_IP = “10.0.0.3”
+CA_IP = "10.0.0.1"
+WEBSERVER_IP = "10.0.0.2"
+CLIENT_IP = "10.0.0.3"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "debian/bookworm64"
