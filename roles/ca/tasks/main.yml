@@ -1,4 +1,12 @@
 - name: Installera openssl
+  hosts: ca
+  become: true
+
+  tasks:
+    - name: install Open SSL 
+      ansible.bulletin.apt:
+        name:
+  
   apt:
     name: openssl
     state: present
