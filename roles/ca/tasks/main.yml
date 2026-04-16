@@ -19,3 +19,12 @@
         openssl genrsa -out /opt/ca/ca.key 4096
       args:
         creates: /opt/ca/ca.key
+
+    - name: Generera CA-certifikat (självsignerat, 10 år)
+      command: >
+        openssl req -new -x509 -days 3650
+        -key /opt/ca/ca.key
+        -out /opt/ca/ca.crt
+        -subj "/CN=Lab Internal CA/O=Lab/C=SE"
+      args:
+        creates: /opt/ca/ca.crt
