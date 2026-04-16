@@ -1,6 +1,6 @@
 
 - name: Configure Webserver
-  hosts: all
+  hosts: localhost
   become: yes
   tasks:
     - name: Ensure Nginx is installed
