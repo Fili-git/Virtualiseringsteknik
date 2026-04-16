@@ -28,3 +28,13 @@
         -subj "/CN=Lab Internal CA/O=Lab/C=SE"
       args:
         creates: /opt/ca/ca.crt
+
+    - name: Generera CSR för webbservern
+      command: >
+        openssl req -new
+        -key /opt/ca/webserver.key
+        -out /opt/ca/webserver.csr
+        -subj "/CN=webserver.lab.local/O=Lab/C=SE"
+      args:
+        creates: /opt/ca/webserver.csr
+
