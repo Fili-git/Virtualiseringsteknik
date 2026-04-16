@@ -50,7 +50,7 @@
         -out /opt/ca/webserver.crt
         -days 365 -sha256
       args:
-        creates /opt/ca/webserver.crt
+        creates: /opt/ca/webserver.crt
 
     - name: Fetch signed certificate to controller
       fetch: 
