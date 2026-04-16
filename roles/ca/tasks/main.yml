@@ -5,8 +5,7 @@
     
     - name: install Open SSL 
       ansible.builtin.apt:
-        name: 
-          - openssl
+        name: openssl
         state: present
 
     - name: skapa CA-mapp
