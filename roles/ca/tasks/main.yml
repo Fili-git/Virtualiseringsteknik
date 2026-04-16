@@ -1,12 +1,21 @@
 - name: Installera openssl
-  hosts: ca
+  hosts: localhost
   become: true
-
   tasks:
+    
     - name: install Open SSL 
-      ansible.bulletin.apt:
-        name:
-  
-  apt:
-    name: openssl
-    state: present
+      apt:
+        name: openssl
+        state: present
+
+    - name: skapa CA-mapp
+      file:
+        path: /opt/ca
+        state: directory
+        mode: '0700'
+
+    - name: generera CA-nyckel
+      command: >
+        openssl genrsa -out /opt/ca/ca.key 4096
+      args:
+        creates: /opt/ca/ca.key
