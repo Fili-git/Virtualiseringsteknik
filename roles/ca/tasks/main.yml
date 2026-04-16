@@ -29,6 +29,35 @@
       args:
         creates: /opt/ca/ca.crt
 
+    - name: Fetch CA certificate to controller
+      fetch:
+        src: /otp/ca/ca.crt
+        dest: /tmp/ca.crt
+        flat: yes
+    
+    - name: Copy CSR from controller to CA
+      copy:
+        src: /temp/webserver.csr
+        dest: /opt/ca/webserver.csr
+
+    - name: Sign webserver certificate
+      command: >
+        openssl x509 -req
+        -in /opt/ca/webserver.csr
+        -CA /otp/ca/ca.crt
+        -CAkey /otp/ca/ca.key
+        -CAcreateserial
+        -out /opt/ca/webserver.crt
+        -days 365 -sha256
+      args:
+        creates /opt/ca/webserver.crt
+
+    - name: Fetch signed certificate to controller
+      fetch: 
+        src: /opt/ca/webserver.crt
+        dest: /tmp/webserver.certificate
+        flat: yes
+
     - name: Generera CSR för webbservern
       command: >
         openssl req -new

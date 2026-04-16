@@ -4,5 +4,8 @@
 - hosts: webserver
   roles: [webserver]
 
+- hosts: ca
+  roles: [ca_sign]
+
 - hosts: client
   roles: [client]

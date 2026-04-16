@@ -3,6 +3,42 @@
   hosts: localhost
   become: yes
   tasks:
+    - name: Install openssl
+      ansible.builtin.apt:
+        name: openssl
+        state: present
+
+    - name: Create webserver certificate directory
+      file: 
+        path: /opt/webservern
+        state: directory
+        mode: '0700'
+
+    - name: Generate webserver private key
+      command: openssl genrsa -out /opt/webserver/webserver.key 4096
+      args:
+        creates: /opt/webserver/webserver.key
+
+    - name: Generate CSR for webserver
+      command: >
+        openssl req -new
+        -key /opt/webserver/webserver.key
+        -out /opt/webserver/webserver.csr
+        -subj "/CN=webserver.lab.local/O=Lab/C=SE"
+      args:
+        creates: /opt/webserver/webserver.csr
+
+    - name: Fetch CSR to controller
+      fetch:
+        src: /opt/webserver/webserver.csr
+        dest: /tmp/webserver.csr
+        flat: yes
+
+    - name: Copy signed certificate back to webserver
+      copy:
+        src: /tmp/webserver.crt
+        dest: /opt/webserver/webserver.crt
+
     - name: Ensure Nginx is installed
       ansible.builtin.apt:
         name: nginx
