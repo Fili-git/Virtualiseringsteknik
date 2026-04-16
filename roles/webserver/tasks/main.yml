@@ -11,7 +11,7 @@
       ansible.builtin.service:
         name: nginx
         state: started
-- name: Skapa cert-mapp
-  file:
-    path: /etc/nginx/certs
-    state: directory
+    - name: Skapa cert-mapp
+      file:
+        path: /etc/nginx/certs
+        state: directory
