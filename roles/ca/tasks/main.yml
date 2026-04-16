@@ -4,7 +4,7 @@
   tasks:
     
     - name: install Open SSL 
-      apt:
+      ansible.builtin.apt:
         name: openssl
         state: present
 
