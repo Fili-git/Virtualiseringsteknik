@@ -31,7 +31,7 @@
 
     - name: Fetch CA certificate to controller
       fetch:
-        src: /otp/ca/ca.crt
+        src: /opt/ca/ca.crt
         dest: /tmp/ca.crt
         flat: yes
     
