@@ -1,5 +1,3 @@
-site.yml
----
 - hosts: ca
   roles: [ca]
 
