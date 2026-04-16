@@ -1,6 +1,6 @@
 - name: Installera openssl
   hosts: localhost
-  become: true
+  become: yes
   tasks:
     
     - name: install Open SSL 
