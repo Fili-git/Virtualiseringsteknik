@@ -11,3 +11,40 @@
       ansible.builtin.service:
         name: nginx
         state: started
+
+- name: Skapa cert-mapp
+  file:
+    path: /etc/nginx/certs
+    state: directory
+
+- name: Kopiera webbserverns certifikat och nyckel
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { src: "files/webserver.crt", dest: "/etc/nginx/certs/webserver.crt", mode: "0644" }
+    - { src: "files/webserver.key", dest: "/etc/nginx/certs/webserver.key", mode: "0600" }
+
+- name: Konfigurera Nginx med HTTPS
+  copy:
+    dest: /etc/nginx/sites-enabled/default
+    content: |
+      server {
+        listen 443 ssl;
+        server_name webserver.lab.local;
+
+        ssl_certificate     /etc/nginx/certs/webserver.crt;
+        ssl_certificate_key /etc/nginx/certs/webserver.key;
+
+        location / {
+          return 200 'Hello from webserver.lab.local over HTTPS!\n';
+          add_header Content-Type text/plain;
+        }
+      }
+
+- name: Starta nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
