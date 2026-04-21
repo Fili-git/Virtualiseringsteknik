@@ -29,26 +29,26 @@
       args:
         creates: /opt/ca/ca.crt
 
-    - name: Signera webbserverns certifikat med CA
-      command: >
-        openssl x509 -req -days 365
-        -in /opt/ca/webserver.csr
-        -CA /opt/ca/ca.crt
-        -CAkey /opt/ca/ca.key
-        -CAcreateserial
-        -out /opt/ca/webserver.crt
-      args:
-        creates: /opt/ca/webserver.crt
+    #- name: Signera webbserverns certifikat med CA
+    #  command: >
+    #    openssl x509 -req -days 365
+    #    -in /opt/ca/webserver.csr
+    #    -CA /opt/ca/ca.crt
+    #    -CAkey /opt/ca/ca.key
+    #    -CAcreateserial
+    #    -out /opt/ca/webserver.crt
+    #  args:
+    #    creates: /opt/ca/webserver.crt
 
-    - name: Hämta CA-cert och webbserver-cert/nyckel som facts
-      fetch:
-        src: "{{ item }}"
-        dest: "ansible/files/"
-        flat: yes
-      loop:
-        - /opt/ca/ca.crt
-        - /opt/ca/webserver.crt
-        - /opt/ca/webserver.key
+    #- name: Hämta CA-cert och webbserver-cert/nyckel som facts
+    #  fetch:
+    #    src: "{{ item }}"
+    #    dest: "ansible/files/"
+    #    flat: yes
+    #  loop:
+    #    - /opt/ca/ca.crt
+    #    - /opt/ca/webserver.crt
+    #    - /opt/ca/webserver.key
 
 
 
