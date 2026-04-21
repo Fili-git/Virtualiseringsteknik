@@ -13,7 +13,7 @@
       file:
         path: /opt/ca
         state: directory
-        mode: '0700'
+        mode: '0755'
 
     - name: generera CA-nyckel
       command: >
