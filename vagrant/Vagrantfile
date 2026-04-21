@@ -45,24 +45,19 @@ Vagrant.configure("2") do |config|
 			vb.cpus = 1
         end #Avslutar VB-konf
 
-		web.vm.provision "shell", inline: <<-SHELL
-      		apt-get update -y
-      		apt-get install -y ansible
+		web.vm.provision "shell", inline: <<-SHELL		
+		 	while [ ! -f /vagrant/ansible_id_ed25519.pub ]; do
+        		sleep 3
+      		done
 
-      # Generera SSH-nyckelpar som vagrant-användaren.
-      # -N "" = inget lösenordsskydd på nyckeln.
-      # I produktion SKA nyckeln ha ett lösenord (passphrase).
-      # I labbmiljö skippar vi det för enkelhets skull.
-      		sudo -u vagrant ssh-keygen -t ed25519 \
-        		-f /home/vagrant/.ssh/id_ed25519 \
-        		-N "" -C "ansible-kontroll"
-
-      # /vagrant/ är Vagrants delade mapp.
-      # Filer här syns av alla VMs och av Windows-hosten.
-      		cp /home/vagrant/.ssh/id_ed25519.pub \
-         	/vagrant/ansible_id_ed25519.pub
-
-      		echo "=== Ansible-kontroll klar ==="
+		    mkdir -p /home/vagrant/.ssh
+      		cat /vagrant/ansible_id_ed25519.pub \
+        		>> /home/vagrant/.ssh/authorized_keys
+      		chmod 700 /home/vagrant/.ssh
+      		chmod 600 /home/vagrant/.ssh/authorized_keys
+      		chown -R vagrant:vagrant /home/vagrant/.ssh
+      
+			echo "=== webserver klar ==="
     	SHELL
 	end #Avslutar vm2
 
