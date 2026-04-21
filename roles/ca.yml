@@ -1,5 +1,5 @@
 - name: Installera konfigurera CA
-  hosts: localhost
+  hosts: ca
   become: yes
   tasks:
     
@@ -30,6 +30,24 @@
       args:
         creates: /opt/ca/ca.crt
 
+    - name: Hämta CSR från webbservern
+      ansible.builtin.fetch:
+        src: /opt/ca/webserver.csr
+        dest: /opt/ca/webserver.csr    # save locally on controller
+        flat: yes
+      delegate_to: "{{ groups['webserver'][0] }}"   # run on webserver VM
+
+    - name: Kopiera CSR till CA
+      ansible.builtin.copy:
+        src: /opt/ca/webserver.csr
+        dest: /opt/ca/webserver.csr
+        mode: '0644'
+
+    - name: Signera webbserverns certifikat med CA
+      command: >
+        openssl x509 -req -days 365
+        -in /opt/ca/webserver.csr
+
     - name: Signera webbserverns certifikat med CA
       command: >
         openssl x509 -req -days 365
@@ -41,15 +59,15 @@
       args:
         creates: /opt/ca/webserver.crt
 
-    #- name: Hämta CA-cert och webbserver-cert/nyckel som facts
-    #  fetch:
-    #    src: "{{ item }}"
-    #    dest: "ansible/files/"
-    #    flat: yes
-    #  loop:
-    #    - /opt/ca/ca.crt
-    #    - /opt/ca/webserver.crt
-    #    - /opt/ca/webserver.key
+#    - name: Hämta CA-cert och webbserver-cert/nyckel som facts
+#      fetch:
+#        src: "{{ item }}"
+#        dest: "ansible/files/"
+#        flat: yes
+#     loop:
+#        - /opt/ca/ca.crt
+#        - /opt/ca/webserver.crt
+#        - /opt/ca/webserver.key
 
 
 
