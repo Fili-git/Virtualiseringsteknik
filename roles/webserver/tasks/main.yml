@@ -13,6 +13,23 @@
         name: nginx
         state: started
 
+
+    - name: Generera webbserverns privata nyckel 
+      command: >
+        openssl genrsa -out /opt/ca/webserver.key 4096
+      args:
+        creates: /opt/ca/webserver.key
+
+    - name: Generera CSR för webbservern 
+      command: >
+        openssl req -new
+        -key /opt/ca/webserver.key
+        -out /opt/ca/webserver.csr
+        -subj "/CN=webserver.lab.local/O=Lab/C=SE"
+      args:
+        creates: /opt/ca/webserver.csr
+
+
     - name: Skapa cert-mapp
       file:
         path: /etc/nginx/certs

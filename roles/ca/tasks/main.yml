@@ -29,21 +29,6 @@
       args:
         creates: /opt/ca/ca.crt
 
-    - name: Generera webbserverns privata nyckel #Detta ska vara på webservern
-      command: >
-        openssl genrsa -out /opt/ca/webserver.key 4096
-      args:
-        creates: /opt/ca/webserver.key
-
-    - name: Generera CSR för webbservern # Detta ska vara på webservern!
-      command: >
-        openssl req -new
-        -key /opt/ca/webserver.key
-        -out /opt/ca/webserver.csr
-        -subj "/CN=webserver.lab.local/O=Lab/C=SE"
-      args:
-        creates: /opt/ca/webserver.csr
-
     - name: Signera webbserverns certifikat med CA
       command: >
         openssl x509 -req -days 365
