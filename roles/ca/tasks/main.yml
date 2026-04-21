@@ -1,5 +1,5 @@
 - name: Installera openssl
-  hosts: localhost
+  hosts: webserver
   become: yes
   tasks:
     
