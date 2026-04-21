@@ -35,6 +35,10 @@
     args:
       creates: /opt/ca/webserver.csr
 
+  - name: Sätt läsrättigheter på CSR
+    file:
+      path: /opt/ca/webserver.csr
+      mode: '0644'
 
   - name: Skapa cert-mapp
     file:
