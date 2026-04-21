@@ -48,4 +48,12 @@
     #  loop:
     #    - /opt/ca/ca.crt
     #    - /opt/ca/webserver.crt
+<<<<<<< HEAD
     #    - /opt/ca/webserver.key
+=======
+    #    - /opt/ca/webserver.key
+
+
+
+
+>>>>>>> 5015ccf3d17b328f5e39ee318c269a186ced5c61

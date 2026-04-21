@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: Configure Webserver
   hosts: localhost
   become: yes
@@ -59,3 +60,68 @@
                 return 200 'Hello from webserver.lab.local over HTTPS!\n';
               }
             }
+=======
+- name: konfigurera webserver
+  hosts: webserver
+  become: yes
+  tasks:
+
+  - name: installer nginx
+    apt:
+      name: nginx
+      state: present
+      update_cache: yes
+
+  - name: Ensure Nginx is running
+    ansible.builtin.service:
+      name: nginx
+      state: started
+
+
+  - name: Generera webbserverns privata nyckel 
+    command: >
+      openssl genrsa -out /opt/ca/webserver.key 4096
+    args:
+      creates: /opt/ca/webserver.key
+
+  - name: Generera CSR för webbservern 
+    command: >
+      openssl req -new
+      -key /opt/ca/webserver.key
+      -out /opt/ca/webserver.csr
+      -subj "/CN=webserver.lab.local/O=Lab/C=SE"
+    args:
+      creates: /opt/ca/webserver.csr
+
+
+  - name: Skapa cert-mapp
+    file:
+      path: /etc/nginx/certs
+      state: directory
+
+  - name: Kopiera webbserverns certifikat och nyckel
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+    loop:
+      - { src: "files/webserver.crt", dest: "/etc/nginx/certs/webserver.crt", mode: "0644" }
+      - { src: "files/webserver.key", dest: "/etc/nginx/certs/webserver.key", mode: "0600" }
+    
+  - name: Konfigurera Nginx med HTTPS
+    copy:
+      dest: /etc/nginx/sites-enabled/default
+      content: |
+          server {
+            listen 443 ssl;
+            server_name webserver.lab.local;
+
+             ssl_certificate     /etc/nginx/certs/webserver.crt;
+            ssl_certificate_key /etc/nginx/certs/webserver.key;
+
+             location / {
+              add_header Content-Type text/plain;
+              return 200 'Hello from webserver.lab.local over HTTPS!\n';
+            }
+          }
+>>>>>>> 5015ccf3d17b328f5e39ee318c269a186ced5c61
