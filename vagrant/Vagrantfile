@@ -1,5 +1,3 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
 
 # Deklarering av variabler
 CA_IP = "10.0.0.1"

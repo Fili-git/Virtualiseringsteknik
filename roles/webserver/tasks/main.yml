@@ -39,7 +39,7 @@
               ssl_certificate_key /etc/nginx/certs/webserver.key;
 
               location / {
+                add_header Content-Type text/plain;
                 return 200 'Hello from webserver.lab.local over HTTPS!\n';
-              add_header Content-Type text/plain;
               }
             }

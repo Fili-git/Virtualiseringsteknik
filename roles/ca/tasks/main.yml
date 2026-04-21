@@ -29,13 +29,13 @@
       args:
         creates: /opt/ca/ca.crt
 
-    - name: Generera webbserverns privata nyckel
+    - name: Generera webbserverns privata nyckel #Detta ska vara på webservern
       command: >
         openssl genrsa -out /opt/ca/webserver.key 4096
       args:
         creates: /opt/ca/webserver.key
 
-    - name: Generera CSR för webbservern
+    - name: Generera CSR för webbservern # Detta ska vara på webservern!
       command: >
         openssl req -new
         -key /opt/ca/webserver.key
