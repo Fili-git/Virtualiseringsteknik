@@ -1,11 +1,7 @@
-- name: Configure Webserver
-  hosts: localhost
-  become: yes
-  tasks:
-    - name: Ensure Nginx is installed
-      ansible.builtin.apt:
-        name: nginx
-        state: present
+- name: Installera nginx
+  apt:
+    name: nginx
+    state: present
 
     - name: Ensure Nginx is running
       ansible.builtin.service:
