@@ -1,0 +1,71 @@
+- name: Installera konfigurera CA
+  hosts: ca
+  become: yes
+  tasks:
+
+  - name: install Open SSL
+    ansible.builtin.apt:
+      name: openssl
+      state: present
+      update_cache: yes
+
+  - name: skapa CA-mapp
+    file:
+      path: /opt/ca
+      state: directory
+      mode: '0755'
+
+  - name: generera CA-nyckel
+    command: >
+      openssl genrsa -out /opt/ca/ca.key 4096
+    args:
+      creates: /opt/ca/ca.key
+
+  - name: Generera CA-certifikat (självsignerat, 10 år)
+    command: >
+      openssl req -new -x509 -days 3650
+      -key /opt/ca/ca.key
+      -out /opt/ca/ca.crt
+      -subj "/CN=Lab Internal CA/O=Lab/C=SE"
+    args:
+      creates: /opt/ca/ca.crt
+
+  - name: Hämta CSR från webbservern
+    fetch:
+      src: /opt/ca/webserver.csr
+      dest: /tmp/webserver.csr
+      flat: yes
+    delegate_to: "{{ groups['webserver'][0] }}"
+
+  - name: Kopiera CSR till CA
+    copy:
+      src: /tmp/webserver.csr
+      dest: /opt/ca/webserver.csr
+      mode: '0644'
+
+  - name: Signera webbserverns certifikat med CA
+    command: >
+      openssl x509 -req -days 365
+      -in /opt/ca/webserver.csr
+      -CA /opt/ca/ca.crt
+      -CAkey /opt/ca/ca.key
+      -CAcreateserial
+      -out /opt/ca/webserver.crt
+    args:
+      creates: /opt/ca/webserver.crt
+
+  - name: Hämta signerat certifikat från CA
+    fetch:
+      src: "{{ item }}"
+      dest: /home/vagrant/Virtualiseringsteknik/ansible/hosts/files/
+      flat: yes
+    loop:
+      - /opt/ca/ca.crt
+      - /opt/ca/webserver.crt
+
+  - name: Hämta webbserverns nyckel från webserver
+    fetch:
+      src: /opt/ca/webserver.key
+      dest: /home/vagrant/Virtualiseringsteknik/ansible/hosts/files/webserver.key
+      flat: yes
+    delegate_to: "{{ groups['webserver'][0] }}"
