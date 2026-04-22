@@ -1,5 +1,5 @@
 - name: Installera konfigurera CA
-  hosts: ca
+  hosts: localhost
   become: yes
   tasks:
 
