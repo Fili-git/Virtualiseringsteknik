@@ -4,5 +4,6 @@
 - hosts: webserver
   roles: [webserver]
 
-- hosts: client
-  roles: [client]
+- import_playbook: ansible/hosts/webserver.yml  # generates key + CSR
+- import_playbook: ansible/hosts/ca.yml          # signs CSR, fetches crt
+- import_playbook: ansible/hosts/webserver.yml   # deploys cert + nginx config
