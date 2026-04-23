@@ -32,42 +32,48 @@
     delegate_to: "{{ groups['webserver'][0] }}"
     run_once: true
  
-  - name: Hämta CSR från webbservern
-    fetch:
-      src: /opt/ca/webserver.csr
-      dest: /tmp/webserver.csr
-      flat: yes
+  - name: Create certificate signing request (CSR) for new certificate
+    community.crypto.openssl_csr_pipe:
+      privatekey_path: /opt/ca/webserver.key
+      subject_alt_name:
+        - "DNS:ansible.com"
+        - "DNS:www.ansible.com"
+        - "DNS:docs.ansible.com"
     delegate_to: "{{ groups['webserver'][0] }}"
+    run_once: true
+    register: csr
 
-  - name: Kopiera CSR till CA
+  - name: Check whether certificate exists
+    stat:
+      path: /opt/ca/certificate.pem
+    delegate_to: "{{ groups['webserver'][0] }}"
+    run_once: true
+    register: certificate_exists
+
+  - name: Read existing certificate if exists
+    slurp:
+      src: /opt/ca/certificate.pem
+    when: certificate_exists.stat.exists
+    delegate_to: "{{ groups['webserver'][0] }}"
+    run_once: true
+    register: certificate
+
+  - name: Sign certificate with our CA
+    community.crypto.x509_certificate_pipe:
+      content: "{{ (certificate.content | b64decode) if certificate_exists.stat.exists else omit }}"
+      csr_content: "{{ csr.csr }}"
+      provider: ownca
+      ownca_path: /opt/ca/ca-certificate.pem
+      ownca_privatekey_path: /opt/ca/ca.key
+      ownca_not_after: +365d  # valid for one year
+      ownca_not_before: "-1d"  # valid since yesterday
+    run_once: true
+    register: certificate
+
+  - name: Write certificate file on webserver
     copy:
-      src: /tmp/webserver.csr
-      dest: /opt/ca/webserver.csr
-      mode: '0644'
-
-  - name: Signera webbserverns certifikat med CA
-    command: >
-      openssl x509 -req -days 365
-      -in /opt/ca/webserver.csr
-      -CA /opt/ca/ca.crt
-      -CAkey /opt/ca/ca.key
-      -CAcreateserial
-      -out /opt/ca/webserver.crt
-    args:
-      creates: /opt/ca/webserver.crt
-
-  - name: Hämta signerat certifikat från CA
-    fetch:
-      src: "{{ item }}"
-      dest: /home/vagrant/Virtualiseringsteknik/ansible/hosts/files/
-      flat: yes
-    loop:
-      - /opt/ca/ca.crt
-      - /opt/ca/webserver.crt
-
-  - name: Hämta webbserverns nyckel från webserver
-    fetch:
-      src: /opt/ca/webserver.key
-      dest: /home/vagrant/Virtualiseringsteknik/ansible/hosts/files/webserver.key
-      flat: yes
+      dest: /opt/ca/certificate.pem
+      content: "{{ certificate.certificate }}"
     delegate_to: "{{ groups['webserver'][0] }}"
+    run_once: true
+    when: certificate is changed
