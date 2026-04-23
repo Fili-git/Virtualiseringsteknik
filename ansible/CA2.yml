@@ -42,10 +42,10 @@
   - name: Create certificate signing request (CSR) for new certificate
     community.crypto.openssl_csr_pipe:
       privatekey_path: /opt/ca/webserver.key
+      common_name: webserver.lab.local
       subject_alt_name:
-        - "DNS:ansible.com"
-        - "DNS:www.ansible.com"
-        - "DNS:docs.ansible.com"
+        - "DNS:webserver.lab.local"
+        - "IP:10.0.0.2"
     delegate_to: "{{ groups['webserver'][0] }}"
     run_once: true
     register: csr
