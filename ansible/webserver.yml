@@ -20,11 +20,10 @@
       state: directory
       mode: '0755'
 
-  - name: Generera webbserverns privata nyckel 
-    command: >
-      openssl genrsa -out /opt/ca/webserver.key 4096
-    args:
-      creates: /opt/ca/webserver.key
+  - name: generera webserver-nyckel #(RSA 4096 bits)
+    community.crypto.openssl_privatekey:
+      path: /opt/ca/webserver.key
+    run_once: true
 
   - name: Generera CSR för webbservern 
     command: >

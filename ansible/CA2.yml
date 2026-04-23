@@ -18,12 +18,19 @@
   - name: generera CA-nyckel #(RSA 4096 bits)
     community.crypto.openssl_privatekey:
       path: /opt/ca/ca.key
+    run_once: true
 
   - name: Create simple self-signed certificate  
     community.crypto.x509_certificate:    
       path: /opt/ca/ca.crt    
       privatekey_path: /opt/ca/ca.key   
       provider: selfsigned
+
+  - name: generera webserver-nyckel #(RSA 4096 bits)
+    community.crypto.openssl_privatekey:
+      path: /opt/ca/webserver.key
+    delegate_to: "{{ groups['webserver'][0] }}"
+    run_once: true
  
   - name: Hämta CSR från webbservern
     fetch:
