@@ -1,4 +1,4 @@
-- name: Installera konfigurera CA
+- name: Konfigurera CA
   hosts: localhost
   become: yes
   tasks:
@@ -15,21 +15,16 @@
       state: directory
       mode: '0755'
 
-  - name: generera CA-nyckel
-    command: >
-      openssl genrsa -out /opt/ca/ca.key 4096
-    args:
-      creates: /opt/ca/ca.key
+  - name: generera CA-nyckel #(RSA 4096 bits)
+    community.crypto.openssl_privatekey:
+      path: /opt/ca/ca.key
 
-  - name: Generera CA-certifikat (självsignerat, 10 år)
-    command: >
-      openssl req -new -x509 -days 3650
-      -key /opt/ca/ca.key
-      -out /opt/ca/ca.crt
-      -subj "/CN=Lab Internal CA/O=Lab/C=SE"
-    args:
-      creates: /opt/ca/ca.crt
-
+  - name: Create simple self-signed certificate  
+    community.crypto.x509_certificate:    
+      path: /opt/ca/ca.crt    
+      privatekey_path: /opt/ca/ca.key   
+      provider: selfsigned
+ 
   - name: Hämta CSR från webbservern
     fetch:
       src: /opt/ca/webserver.csr
