@@ -14,12 +14,12 @@
       name: nginx
       state: started
     
-  - name: Configure Nginx with HTTPS
+  - name: Configure Nginx with HTTPS #80 was previously 443
     copy:
       dest: /etc/nginx/sites-enabled/default
       content: |
           server {
-            listen 443 ssl;
+            listen 80 ssl;
             server_name webserver.lab.local;
 
              ssl_certificate     /opt/ca/certificate.pem;
