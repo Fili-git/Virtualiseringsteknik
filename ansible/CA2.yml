@@ -1,21 +1,21 @@
-- name: Konfigurera CA
+- name: Configure Certificates
   hosts: localhost
   become: yes
   tasks:
 
-  - name: install Open SSL
+  - name: Install Open SSL
     ansible.builtin.apt:
       name: openssl
       state: present
       update_cache: yes
 
-  - name: skapa CA-mapp
+  - name: Create CA-directory
     file:
       path: /opt/ca
       state: directory
       mode: '0755'
 
-  - name: generera CA-nyckel #(RSA 4096 bits)
+  - name: Generate CA-key #(RSA 4096 bits)
     community.crypto.openssl_privatekey:
       path: /opt/ca/ca.key
     run_once: true
@@ -26,7 +26,7 @@
       privatekey_path: /opt/ca/ca.key   
       provider: selfsigned
 
-  - name: generera webserver-nyckel #(RSA 4096 bits)
+  - name: Generate Webserver-key #(RSA 4096 bits)
     community.crypto.openssl_privatekey:
       path: /opt/ca/webserver.key
     delegate_to: "{{ groups['webserver'][0] }}"
