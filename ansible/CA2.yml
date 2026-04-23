@@ -9,11 +9,18 @@
       state: present
       update_cache: yes
 
-  - name: Create CA-directory
+  - name: Create directory on CA
     file:
       path: /opt/ca
       state: directory
       mode: '0755'
+  
+  - name: Create directory on Webserver
+    file:
+      path: /opt/ca
+      state: directory
+      mode: '0755'
+    delegate_to: "{{ groups['webserver'][0] }}"
 
   - name: Generate CA-key #(RSA 4096 bits)
     community.crypto.openssl_privatekey:

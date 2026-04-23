@@ -1,9 +1,9 @@
-- name: konfigurera webserver
+- name: Configure Webserver
   hosts: webserver
   become: yes
   tasks:
 
-  - name: installer nginx
+  - name: Install nginx
     apt:
       name: nginx
       state: present
@@ -13,48 +13,8 @@
     ansible.builtin.service:
       name: nginx
       state: started
-
-  - name: Skapa katalog
-    file:
-      path: /opt/ca
-      state: directory
-      mode: '0755'
-
-  - name: generera webserver-nyckel #(RSA 4096 bits)
-    community.crypto.openssl_privatekey:
-      path: /opt/ca/webserver.key
-    run_once: true
-
-  - name: Generera CSR för webbservern 
-    command: >
-      openssl req -new
-      -key /opt/ca/webserver.key
-      -out /opt/ca/webserver.csr
-      -subj "/CN=webserver.lab.local/O=Lab/C=SE"
-    args:
-      creates: /opt/ca/webserver.csr
-
-  - name: Sätt läsrättigheter på CSR
-    file:
-      path: /opt/ca/webserver.csr
-      mode: '0644'
-
-  - name: Skapa cert-mapp
-    file:
-      path: /etc/nginx/certs
-      state: directory
-      mode: 0755
-
-  - name: Kopiera webbserverns certifikat och nyckel
-    copy:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
-      mode: "{{ item.mode }}"
-    loop:
-      - { src: "files/webserver.crt", dest: "/etc/nginx/certs/webserver.crt", mode: "0644" }
-      - { src: "files/webserver.key", dest: "/etc/nginx/certs/webserver.key", mode: "0600" }
     
-  - name: Konfigurera Nginx med HTTPS
+  - name: Configure Nginx with HTTPS
     copy:
       dest: /etc/nginx/sites-enabled/default
       content: |
