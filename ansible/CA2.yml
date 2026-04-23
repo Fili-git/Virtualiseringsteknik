@@ -63,7 +63,7 @@
       content: "{{ (certificate.content | b64decode) if certificate_exists.stat.exists else omit }}"
       csr_content: "{{ csr.csr }}"
       provider: ownca
-      ownca_path: /opt/ca/ca-certificate.pem
+      ownca_path: /opt/ca/ca.crt
       ownca_privatekey_path: /opt/ca/ca.key
       ownca_not_after: +365d  # valid for one year
       ownca_not_before: "-1d"  # valid since yesterday
