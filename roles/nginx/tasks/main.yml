@@ -1,13 +1,13 @@
 - name: Install nginx
-    apt:
-      name: nginx
-      state: present
-      update_cache: yes
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
 
 - name: Ensure Nginx is running
-    ansible.builtin.service:
-      name: nginx
-      state: started
+  ansible.builtin.service:
+    name: nginx
+    state: started
     
 - name: Configure Nginx with HTTPS #80 was previously 443, för HTTP 80, för HTTPS 443
   copy:
