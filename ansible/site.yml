@@ -1,9 +1,24 @@
-- hosts: ca
-  roles: [ca]
+---
+- name: Configure Certificates
+  hosts: ca
+  become: yes
+  roles:
+    - CA-config
 
-- hosts: webserver
-  roles: [webserver]
+- name: Create certificate and CSR
+  hosts: webserver
+  become: yes
+  roles:
+    - WS-CSR
+    
+- name: Sign CSR request
+  hosts: ca
+  become: yes
+  roles:
+    - CA-sign
 
-- import_playbook: ansible/hosts/webserver.yml  # generates key + CSR
-- import_playbook: ansible/hosts/ca2.yml          # signs CSR, fetches crt
-- import_playbook: ansible/hosts/webserver.yml   # deploys cert + nginx config
+- name: Install and configure nginx
+  hosts: webserver
+  become: yes
+  roles:
+    - nginx
