@@ -55,6 +55,7 @@
       subject_alt_name:
         - "DNS:webserver.lab.local"
         - "IP:10.0.0.2"
+        - "IP:172.0.2.1"
     delegate_to: "{{ groups['webserver'][0] }}"
     run_once: true
     register: csr
