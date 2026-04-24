@@ -1,0 +1,41 @@
+- name: Create directory on Webserver
+  file:
+    path: /opt/ca
+    state: directory
+    mode: '0755'
+
+- name: Generate Webserver-key #(RSA 4096 bits)
+  community.crypto.openssl_privatekey:
+    path: /opt/ca/webserver.key
+  run_once: true
+
+- name: Create certificate signing request (CSR) for new certificate
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: /opt/ca/webserver.key
+    common_name: webserver.lab.local
+    subject_alt_name:
+      - "DNS:webserver.lab.local"
+      - "IP:10.0.0.2"
+      - "IP:172.0.2.1"
+  run_once: true
+  register: csr
+
+- name: Check whether certificate exists
+  stat:
+    path: /opt/ca/certificate.pem
+  run_once: true
+  register: certificate_exists
+
+- name: Read existing certificate if exists 
+  slurp:
+    src: /opt/ca/certificate.pem
+  when: certificate_exists.stat.exists
+  run_once: true
+  register: certificate
+
+- name: Write certificate file on webserver
+  copy:
+    dest: /opt/ca/certificate.pem
+    content: "{{ certificate.certificate }}"
+  run_once: true
+  when: certificate is changed
