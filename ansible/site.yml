@@ -1,6 +1,6 @@
 ---
 - name: Configure Certificates
-  hosts: ca
+  hosts: localhost
   become: yes
   roles:
     - config
@@ -12,7 +12,7 @@
     - csr
     
 - name: Sign CSR request
-  hosts: ca
+  hosts: localhost
   become: yes
   roles:
     - sign
