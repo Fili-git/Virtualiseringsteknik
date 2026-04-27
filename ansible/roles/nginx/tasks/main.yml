@@ -9,7 +9,7 @@
     name: nginx
     state: started
     
-- name: Configure Nginx with HTTPS #80 was previously 443, för HTTP 80, för HTTPS 443
+- name: Configure Nginx with HTTPS 
   copy:
     dest: /etc/nginx/sites-enabled/default
     content: |
