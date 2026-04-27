@@ -20,22 +20,8 @@
   run_once: true
   register: csr
 
-- name: Check whether certificate exists
-  stat:
-    path: /opt/ca/certificate.pem
-  run_once: true
-  register: certificate_exists
-
-- name: Read existing certificate if exists 
-  slurp:
-    src: /opt/ca/certificate.pem
-  when: certificate_exists.stat.exists
-  run_once: true
-  register: certificate
-
-- name: Write certificate file on webserver
+- name: Write CSR to file
   copy:
-    dest: /opt/ca/certificate.pem
-    content: "{{ certificate.certificate }}"
-  run_once: true
-  when: certificate is changed
+    dest: /opt/ca/webserver.csr
+    content: "{{ csr.csr }}"
+    mode: '0644'

@@ -1,13 +1,26 @@
 ---
+- name: Fetch CSR from webserver
+  fetch:
+    src: /opt/ca/webserver.csr
+    dest: /tmp/webserver.csr
+    flat: yes
+  delegate_to: "{{ groups['webserver'][0] }}"
+
+- name: Copy CSR to CA
+  copy:
+    src: /tmp/webserver.csr
+    dest: /opt/ca/webserver.csr
+    mode: '0644'
+
 - name: Check whether certificate exists
   stat:
-    path: /opt/ca/certificate.pem
+    path: /opt/ca/certificate.crt
   run_once: true
   register: certificate_exists
 
 - name: Read existing certificate if exists 
   slurp:
-    src: /opt/ca/certificate.pem
+    src: /opt/ca/certificate.crt
   when: certificate_exists.stat.exists
   run_once: true
   register: certificate
@@ -26,7 +39,7 @@
 
 - name: Write certificate file on webserver
   copy:
-    dest: /opt/ca/certificate.pem
+    dest: /opt/ca/certificate.crt
     content: "{{ certificate.certificate }}"
   run_once: true
   when: certificate is changed

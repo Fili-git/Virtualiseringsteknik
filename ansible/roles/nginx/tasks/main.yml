@@ -17,7 +17,7 @@
           listen 443 ssl;
           server_name webserver.lab.local;
 
-           ssl_certificate     /opt/ca/certificate.pem;
+           ssl_certificate     /opt/ca/certificate.crt;
            ssl_certificate_key /opt/ca/webserver.key;
 
            location / {
