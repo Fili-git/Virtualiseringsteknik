@@ -3,19 +3,19 @@
   hosts: ca
   become: yes
   roles:
-    - CA-config
+    - config
 
 - name: Create certificate and CSR
   hosts: webserver
   become: yes
   roles:
-    - WS-CSR
+    - csr
     
 - name: Sign CSR request
   hosts: ca
   become: yes
   roles:
-    - CA-sign
+    - sign
 
 - name: Install and configure nginx
   hosts: webserver
