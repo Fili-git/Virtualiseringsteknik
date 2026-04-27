@@ -28,7 +28,7 @@
 - name: Sign certificate with our CA
   community.crypto.x509_certificate_pipe:
     content: "{{ (certificate.content | b64decode) if certificate_exists.stat.exists else omit }}"
-    csr_content: "{{ csr.csr }}"
+    csr_content: "{{ lookup('file', '/opt/ca/webserver.csr') }}"
     provider: ownca
     ownca_path: /opt/ca/ca.crt
     ownca_privatekey_path: /opt/ca/ca.key
