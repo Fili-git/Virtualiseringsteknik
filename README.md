@@ -46,7 +46,27 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 
 
 # Folder structure
-    Structure Example (when we've looked it over)
+    +---ansible
+    |   \---roles
+    |       +---config
+    |       |   \---tasks
+    |       +---csr
+    |       |   \---tasks
+    |       +---nginx
+    |       |   +---handlers
+    |       |   \---tasks
+    |       \---sign
+    |           \---tasks
+    \---vagrant
+        \---.vagrant
+            +---machines
+            |   +---ca
+            |   |   \---virtualbox
+            |   +---client
+            |   |   \---virtualbox
+            |   \---webserver
+            |       \---virtualbox
+            \---rgloader
 
 
 # Components
