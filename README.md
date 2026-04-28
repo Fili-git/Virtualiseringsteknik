@@ -62,8 +62,6 @@ An internal Certificate Authority (CA) which manages and issues certifications f
             +---machines
             |   +---ca
             |   |   \---virtualbox
-            |   +---client
-            |   |   \---virtualbox
             |   \---webserver
             |       \---virtualbox
             \---rgloader
@@ -105,8 +103,8 @@ An internal Certificate Authority (CA) which manages and issues certifications f
     3. SSH into CA
         vagrant ssh ca
     4. Run ansible-playbook
+        Git clone (https)
         cd ~/Virtualiseringsteknik
-        Git pull
         ansible-playbook -i ansible/hosts.ini ansible/site.yml
     5. Verification script?
         ex. bash test/verify.sh
