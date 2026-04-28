@@ -1,57 +1,55 @@
-# Virtualiseringsteknik
-
-PKI och certifikathantering
-    Description: An internal Certificate Authority (CA) which manages and issues certifications for internal services. While a Webserver using HTTPS, sends Certificate Signing Request (CSR) and recieves a signed certificate (crt).
+# Certificate Authority
+An internal Certificate Authority (CA) which manages and issues certifications for internal services. While a Webserver using HTTPS, sends Certificate Signing Request (CSR) and recieves a signed certificate (crt).
 
 
-Table of Contents
-    Architecture
-    Environment and IP-addresses
-    Folder structure
-    Components
-    Requirements
-    Getting started
-    Security Measures
-    Security Analysis
-    Verification
-    Design choices and motivation
+# Table of Contents
+- [Architecture](#Architecture)
+- [Environment and IP-addresses](#Environment-and-IP-addresses)
+- [Folder structure](#Folder-structure)
+- [Components](#Components)
+- [Requirements](#Requirements)
+- [Getting started](#Getting-started)
+- [Security Measures](#Security-Measures)
+- [Security Analysis](#Security-Analysis)
+- [Verification](#Verification)
+- [Design choices and motivation](#Design-choices-and-motivation)
 
 
-Architecture
+# Architecture
     Diagram
 
 
-Environment and IP-addresses
-    VM 
-        Role 
-        IP-address 
-        Port forwarding 
-        Description
+# Environment and IP-addresses
+## VM 
+- Role 
+- IP-address 
+- Port forwarding 
+- Description
 
-    Nginx 
-        Endpoint webserver
-        IP-address 
-        Port forwarding 
-        Listens to port 443, uses HTTPS and acts as a basic webserver and endpoint, displaying a message on successful certification.
+## Nginx 
+- Endpoint webserver
+- IP-address 
+- Port forwarding 
+- Listens to port 443, uses HTTPS and acts as a basic webserver and endpoint, displaying a message on successful certification.
     
-    CA 
-        Certificate Authority 
-        IP-address 
-        Port forwarding 
-        Self-signing authority which recieves signing requests (CSR) and return signed certification (crt).
+## CA 
+- Certificate Authority 
+- IP-address 
+- Port forwarding 
+- Self-signing authority which recieves signing requests (CSR) and return signed certification (crt).
 
-    Webserver 
-        Host and Webserver 
-        IP-address : 10.0.0.2 
-        Port forwarding 
-        Runs Nginx, sends CSRs and recieves signed certificates. Responds to port 443 requests with static message.
+## Webserver 
+- Host and Webserver 
+- IP-address : 10.0.0.2 
+- Port forwarding 
+- Runs Nginx, sends CSRs and recieves signed certificates. Responds to port 443 requests with static message.
 
 
-Folder structure
+# Folder structure
     Structure Example (when we've looked it over)
 
 
-Components
+# Components
     Vagrantfile
         Defines and creates our VMs, with host names, IP-addreses and resources. Generates key pairs. Installs Ansible and exposes port 443 for our webserver.
     hosts.ini
@@ -68,7 +66,7 @@ Components
         Fetches CSR from webserver, copies CSR to CA. Checks for exsisting certificates and reads any that do. Signs CSR with our CA, and then writes certificate (crt) and sends back to webserver.
 
 
-Requirements
+# Requirements
     Software requirements for host computer:
         VirtualBox
         Vagrant
@@ -77,7 +75,7 @@ Requirements
         X GB RAM
 
 
-Getting started - Set up/How to
+# Getting started - Set up/How to
     1. Clone repository
         Add url.
         cd 
@@ -98,13 +96,13 @@ Getting started - Set up/How to
         User should be able to access the url and read the message without any security warnings.
 
 
-Security Measures
+# Security Measures
 
 
-Security Analysis
+# Security Analysis
 
 
-Verification
+# Verification
 
 
-Design choices and motivation
+# Design choices and motivation
