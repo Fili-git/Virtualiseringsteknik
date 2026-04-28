@@ -1,5 +1,5 @@
 
-# Deklarering av variabler
+# Variables
 CA_IP = "10.0.0.1"
 WEBSERVER_IP = "10.0.0.2"
 
@@ -14,43 +14,43 @@ Vagrant.configure("2") do |config|
 			vb.name = "ca"
 			vb.memory = 512
 			vb.cpus = 1
-		end #Avslutar VB-konf
+		end #ends VB-conf
 
 		ca.vm.provision "shell", inline: <<-SHELL
       		apt-get update -y
       		apt-get install -y ansible
 
-      # Generera SSH-nyckelpar som vagrant-användaren.
-      # -N "" = inget lösenordsskydd på nyckeln.
+      	# Generate SSH keys 
       		sudo -u vagrant ssh-keygen -t ed25519 \
         		-f /home/vagrant/.ssh/id_ed25519 \
-        		-N "" -C "ansible-kontroll"
+        		-N "" -C "ansible-kontroll" 
 
-      # /vagrant/ är Vagrants delade mapp.
-      # Filer här syns av alla VMs och av Windows-hosten.
+      	# Copy public key to shared folder
       		cp /home/vagrant/.ssh/id_ed25519.pub \
          	/vagrant/ansible_id_ed25519.pub
 
-      		echo "=== CA klar ==="
+      		echo "=== CA done ==="
     	SHELL
-	end #Avslutar VM1
+	end #End VM1
 
-# VM 2: Webserver
+	# VM 2: Webserver
 	config.vm.define "webserver" do |web|
 		web.vm.hostname = "webserver"
 		web.vm.network "private_network", ip: WEBSERVER_IP
-		web.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true 
+		# web.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true #onödig med nuvarande konf om vi ansluter via https://10.0.0.2
 		web.vm.provider "virtualbox" do |vb|
 			vb.name = "webserver"
 			vb.memory = 512
 			vb.cpus = 1
-        end #Avslutar VB-konf
+        end #End VB-conf
 
+		# Make sure that VM1's public keye is generated
 		web.vm.provision "shell", inline: <<-SHELL		
 		 	while [ ! -f /vagrant/ansible_id_ed25519.pub ]; do
         		sleep 3
       		done
 
+			# Create folders and copy over public key from VM1
 		    mkdir -p /home/vagrant/.ssh
       		cat /vagrant/ansible_id_ed25519.pub \
         		>> /home/vagrant/.ssh/authorized_keys
@@ -58,11 +58,10 @@ Vagrant.configure("2") do |config|
       		chmod 600 /home/vagrant/.ssh/authorized_keys
       		chown -R vagrant:vagrant /home/vagrant/.ssh
       
-			echo "=== webserver klar ==="
+			echo "=== Webserver done ==="
     	SHELL
-	end #Avslutar vm2
+	end #End VM2
 
 
-end #Avslutar hela Vagrant
-
+end #End all
 	
