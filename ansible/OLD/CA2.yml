@@ -54,8 +54,8 @@
       common_name: webserver.lab.local
       subject_alt_name:
         - "DNS:webserver.lab.local"
-        - "DNS:localhost:8443"
-        - "IP:10.0.0.2"
+        - "DNS:localhost:8443" #behövs inte
+        - "IP:10.0.0.2" 
         - "IP:172.0.2.1"
     delegate_to: "{{ groups['webserver'][0] }}"
     run_once: true
