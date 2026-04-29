@@ -2,7 +2,7 @@
 An internal Certificate Authority (CA) which manages and issues certifications for internal services. While a Webserver using HTTPS, sends Certificate Signing Request (CSR) and recieves a signed certificate (crt).
 
 
-# Table of Contents
+## Table of Contents
 - [Architecture](#Architecture)
 - [Environment and IP-addresses](#Environment-and-IP-addresses)
 - [Folder structure](#Folder-structure)
@@ -15,37 +15,37 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 - [Design choices and motivation](#Design-choices-and-motivation)
 
 
-# Architecture
+## Architecture
     Diagram
 
 
-# Environment and IP-addresses
-## VM 
+## Environment and IP-addresses
+### VM 
 - Role 
 - IP-address 
 - Port forwarding 
 - Description
 
-## Nginx 
+### Nginx 
 - Endpoint webserver
 - IP-address 
 - Port forwarding 
 - Listens to port 443, uses HTTPS and acts as a basic webserver and endpoint, displaying a message on successful certification.
     
-## CA 
+### CA 
 - Certificate Authority 
 - IP-address 
 - Port forwarding 
 - Self-signing authority which recieves signing requests (CSR) and return signed certification (crt).
 
-## Webserver 
+### Webserver 
 - Host and Webserver 
 - IP-address : 10.0.0.2 
 - Port forwarding 
 - Runs Nginx, sends CSRs and recieves signed certificates. Responds to port 443 requests with static message.
 
 
-# Folder structure
+## Folder structure
     +---ansible
     |   \---roles
     |       +---config
@@ -67,7 +67,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
             \---rgloader
 
 
-# Components
+## Components
     Vagrantfile
         Defines and creates our VMs, with host names, IP-addreses and resources. Generates key pairs. Installs Ansible and exposes port 443 for our webserver.
     hosts.ini
@@ -84,7 +84,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
         Fetches CSR from webserver, copies CSR to CA. Checks for exsisting certificates and reads any that do. Signs CSR with our CA, and then writes certificate (crt) and sends back to webserver.
 
 
-# Requirements
+## Requirements
     Software requirements for host computer:
         VirtualBox
         Vagrant
@@ -93,40 +93,53 @@ An internal Certificate Authority (CA) which manages and issues certifications f
         X GB RAM
 
 
-# Getting started - Set up/How to
+## Getting started - Set up/How to
+
 1. Clone repository
-   ```Git clone git@github.com:Fili-git/Virtualiseringsteknik.git
-   cd /Virtualiseringsteknik
-2. Start all VMs
-   cd vagrant
-   vagrant up
+   
+    ```Git clone git@github.com:Fili-git/Virtualiseringsteknik.git```
+   
+    ```cd /Virtualiseringsteknik```
+3. Start all VMs
+
+    ```cd vagrant```
+   
+    ```vagrant up```
 3. SSH into CA
-   vagrant ssh ca
+
+    ```vagrant ssh ca```
 4. Run ansible-playbook
-   ```Git clone https://github.com/Fili-git/Virtualiseringsteknik.git
-   cd ~/Virtualiseringsteknik
-   ansible-playbook -i ansible/hosts.ini ansible/site.yml
-5. Verification script?
+
+    ```Git clone https://github.com/Fili-git/Virtualiseringsteknik.git```
+   
+    ```cd ~/Virtualiseringsteknik```
+   
+    ```ansible-playbook -i ansible/hosts.ini ansible/site.yml```
+6. Verification script?
+   
    ex. bash test/verify.sh
-6. Trust the CA
-   Run ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on CA VM. 
-   On host install the certificate into Trusted Root Certification Authoritites.
-7. Go onto the webserver
+8. Trust the CA
+
+    ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on CA VM.
+
+    On host install the certificate into Trusted Root Certification Authoritites.
+9. Go onto the webserver
+   
    https://10.0.0.2
 
-Expected results:
+    Expected results:
    User should be able to access the url and read the message without any security warnings. If step 6 haven't been done, the browser should claim the connection is insecure.
 
 
-# Security Measures
+## Security Measures
 We have made an intentional decision to not password protect our certification and SSH keys, due to this being a lab environment. In a real environment, this would be a necessity.
 
-# Security Analysis
+## Security Analysis
 
 
-# Verification
+## Verification
 
 
-# Design choices and motivation
+## Design choices and motivation
 
 Do not add every certificate you find, especially of unknown origin.
