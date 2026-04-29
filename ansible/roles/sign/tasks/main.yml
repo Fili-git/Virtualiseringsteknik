@@ -4,7 +4,7 @@
     src: /opt/ca/webserver.csr
     dest: /tmp/webserver.csr
     flat: yes
-  delegate_to: "{{ groups['webserver'][0] }}"
+  delegate_to: "{{ groups['webserver'] }}"
 
 - name: Copy CSR to CA
   copy:
@@ -41,6 +41,6 @@
   copy:
     dest: /opt/ca/certificate.crt
     content: "{{ certificate.certificate }}"
-  delegate_to: "{{ groups['webserver'][0] }}"
+  delegate_to: "{{ groups['webserver'] }}"
   run_once: true
   #when: certificate is changed
