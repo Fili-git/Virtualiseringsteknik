@@ -109,9 +109,10 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 5. Verification script?
    ex. bash test/verify.sh
 6. Trust the CA
-   Run ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on host and install the certificat into Trusted Root Certification Authoritites.
+   Run ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on host and install the certificate into Trusted Root Certification Authoritites.
 7. Go onto the webserver
    https://10.0.0.2
+
 Expected results:
    User should be able to access the url and read the message without any security warnings. If step 6 haven't been done, the browser should claim the connection is insecure.
 
