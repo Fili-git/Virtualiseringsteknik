@@ -119,7 +119,7 @@ Expected results:
 
 
 # Security Measures
-
+We have made an intentional decision to not password protect our certification and SSH keys, due to this being a lab environment. In a real environment, this would be a necessity.
 
 # Security Analysis
 
@@ -128,3 +128,5 @@ Expected results:
 
 
 # Design choices and motivation
+
+Do not add every certificate you find, especially of unknown origin.
