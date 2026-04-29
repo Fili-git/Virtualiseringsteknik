@@ -109,7 +109,8 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 5. Verification script?
    ex. bash test/verify.sh
 6. Trust the CA
-   Run ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on host and install the certificate into Trusted Root Certification Authoritites.
+   Run ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on CA VM. 
+   On host install the certificate into Trusted Root Certification Authoritites.
 7. Go onto the webserver
    https://10.0.0.2
 
