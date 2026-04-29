@@ -4,7 +4,7 @@
     src: /opt/ca/webserver.csr
     dest: /tmp/{{ item }}_webserver.csr
     flat: yes
-  delegate_to: "{{ item }}"  # string, one host at a time
+  delegate_to: "{{ item }}"
   loop: "{{ groups['webserver'] }}"
 
 - name: Copy CSR to CA
@@ -14,41 +14,38 @@
     mode: '0644'
   loop: "{{ groups['webserver'] }}"
 
-- name: Copy CSR to CA
-  copy:
-    src: /tmp/webserver.csr
-    dest: /opt/ca/webserver.csr
-    mode: '0644'
-
 - name: Check whether certificate exists
   stat:
-    path: /opt/ca/certificate.crt
-  run_once: true
+    path: /opt/ca/{{ item }}_certificate.crt
   register: certificate_exists
+  loop: "{{ groups['webserver'] }}"
 
-- name: Read existing certificate if exists 
+- name: Read existing certificate if exists
   slurp:
-    src: /opt/ca/certificate.crt
-  when: certificate_exists.stat.exists
-  run_once: true
+    src: /opt/ca/{{ item }}_certificate.crt
+  when: certificate_exists.results[loop_index].stat.exists
+  loop: "{{ groups['webserver'] }}"
+  loop_control:
+    index_var: loop_index
   register: certificate
 
 - name: Sign certificate with our CA
   community.crypto.x509_certificate_pipe:
-    content: "{{ (certificate.content | b64decode) if certificate_exists.stat.exists else omit }}"
-    csr_content: "{{ lookup('file', '/opt/ca/webserver.csr') }}"
+    csr_content: "{{ lookup('file', '/opt/ca/' + item + '_webserver.csr') }}"
     provider: ownca
     ownca_path: /opt/ca/ca.crt
     ownca_privatekey_path: /opt/ca/ca.key
-    ownca_not_after: +365d  # valid for one year
-    ownca_not_before: "-1d"  # valid since yesterday
-  run_once: true
-  register: certificate
+    ownca_not_after: +365d
+    ownca_not_before: "-1d"
+  loop: "{{ groups['webserver'] }}"
+  register: certificates
 
 - name: Write certificate file on webserver
   copy:
     dest: /opt/ca/certificate.crt
-    content: "{{ certificate.certificate }}"
-  delegate_to: "{{ groups['webserver'] }}"
-  run_once: true
+    content: "{{ certificates.results[loop_index].certificate }}"
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['webserver'] }}"
+  loop_control:
+    index_var: loop_index
   #when: certificate is changed
