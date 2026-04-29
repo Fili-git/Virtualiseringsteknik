@@ -2,9 +2,17 @@
 - name: Fetch CSR from webserver
   fetch:
     src: /opt/ca/webserver.csr
-    dest: /tmp/webserver.csr
+    dest: /tmp/{{ item }}_webserver.csr
     flat: yes
-  delegate_to: "{{ groups['webserver'] }}"
+  delegate_to: "{{ item }}"  # string, one host at a time
+  loop: "{{ groups['webserver'] }}"
+
+- name: Copy CSR to CA
+  copy:
+    src: /tmp/{{ item }}_webserver.csr
+    dest: /opt/ca/{{ item }}_webserver.csr
+    mode: '0644'
+  loop: "{{ groups['webserver'] }}"
 
 - name: Copy CSR to CA
   copy:
