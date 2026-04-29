@@ -95,15 +95,15 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 
 # Getting started - Set up/How to
     1. Clone repository
-        Add url.
-        cd 
+        git clone git@github.com:Fili-git/Virtualiseringsteknik.gitGit clone 
+        cd /Virtualiseringsteknik
     2. Start all VMs
         cd vagrant
         vagrant up
     3. SSH into CA
         vagrant ssh ca
     4. Run ansible-playbook
-        Git clone (https)
+        Git clone (https) https://github.com/Fili-git/Virtualiseringsteknik.git
         cd ~/Virtualiseringsteknik
         ansible-playbook -i ansible/hosts.ini ansible/site.yml
     5. Verification script?
