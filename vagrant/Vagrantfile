@@ -37,7 +37,6 @@ Vagrant.configure("2") do |config|
 	config.vm.define "webserver" do |web|
 		web.vm.hostname = "webserver"
 		web.vm.network "private_network", ip: WEBSERVER_IP
-		# web.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true #onödig med nuvarande konf om vi ansluter via https://10.0.0.2
 		web.vm.provider "virtualbox" do |vb|
 			vb.name = "webserver"
 			vb.memory = 512
