@@ -94,24 +94,26 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 
 
 # Getting started - Set up/How to
-    1. Clone repository
-        Add url.
-        cd 
-    2. Start all VMs
-        cd vagrant
-        vagrant up
-    3. SSH into CA
-        vagrant ssh ca
-    4. Run ansible-playbook
-        Git clone (https)
-        cd ~/Virtualiseringsteknik
-        ansible-playbook -i ansible/hosts.ini ansible/site.yml
-    5. Verification script?
-        ex. bash test/verify.sh
-    6. Go onto the webserver
-        https://10.0.0.2
-    Expected results:
-        User should be able to access the url and read the message without any security warnings.
+1. Clone repository
+   Add url.
+   cd 
+2. Start all VMs
+   cd vagrant
+   vagrant up
+3. SSH into CA
+   vagrant ssh ca
+4. Run ansible-playbook
+   ```Git clone (https)
+   cd ~/Virtualiseringsteknik
+   ansible-playbook -i ansible/hosts.ini ansible/site.yml
+5. Verification script?
+   ex. bash test/verify.sh
+6. Trust the CA
+   Run ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on host and install the certificat into Trusted Root Certification Authoritites.
+7. Go onto the webserver
+   https://10.0.0.2
+Expected results:
+   User should be able to access the url and read the message without any security warnings. If step 6 haven't been done, the browser should claim the connection is insecure.
 
 
 # Security Measures
