@@ -93,33 +93,31 @@ Hardware requirements for host computer:
 
 1. Clone repository
    
-    ```Git clone git@github.com:Fili-git/Virtualiseringsteknik.git```
+   On host: ```Git clone git@github.com:Fili-git/Virtualiseringsteknik.git```
    
-    ```cd /Virtualiseringsteknik```
+   On host: ```cd /Virtualiseringsteknik```
 3. Start all VMs
 
-    ```cd vagrant```
+   On host: ```cd vagrant```
    
-    ```vagrant up```
+   On host: ```vagrant up```
 3. SSH into CA
 
-    ```vagrant ssh ca```
+   On host: ```vagrant ssh ca```
 4. Run ansible-playbook
-
-    ```Git clone https://github.com/Fili-git/Virtualiseringsteknik.git```
    
-    ```cd ~/Virtualiseringsteknik/ansible```
+   On CA: ```cd ~/Virtualiseringsteknik/ansible```
    
-    ```ansible-playbook site.yml```
+   On CA: ```ansible-playbook site.yml```
    
 8. Trust the CA (optional)
 
-    ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on CA VM.
+   On CA: ```cp /opt/ca/ca.crt /vagrant/ca.crt```
 
-    On host install the certificate into Trusted Root Certification Authoritites.
+   On host: Install the certificate into Trusted Root Certification Authoritites.
 9. Go onto the webserver
    
-   https://10.0.0.2
+   On host in browser: https://10.0.0.2
 
     Expected results:
    If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure.
