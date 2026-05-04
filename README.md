@@ -14,7 +14,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 
 
 ## Architecture
-    Diagram
+ ![Diagram](https://github.com/Fili-git/Virtualiseringsteknik/blob/main/Virtualiseringsteknik.png)
 
 
 ## Environment and IP-addresses
