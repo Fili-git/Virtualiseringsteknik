@@ -48,4 +48,4 @@
   loop: "{{ groups['webserver'] }}"
   loop_control:
     index_var: loop_index
-  when: certificate is changed
+  #when: certificate is changed
