@@ -34,12 +34,10 @@
   loop: "{{ groups['webserver'] }}"
   register: certificates
 
-- name: Write certificate to webserver
+- name: Copy certificate to webserver
   copy:
+    src: /opt/ca/{{ item }}_certificate.crt    # ← read from file on CA
     dest: /opt/ca/certificate.crt
-    content: "{{ certificates.results[loop_index].certificate }}"
+    mode: '0644'
   delegate_to: "{{ item }}"
   loop: "{{ groups['webserver'] }}"
-  loop_control:
-    index_var: loop_index
-  when: certificates.results[loop_index] is changed
