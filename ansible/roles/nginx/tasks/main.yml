@@ -1,4 +1,4 @@
-- name: Install nginx
+- name: Install Nginx
   apt:
     name: nginx
     state: present
