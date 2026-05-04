@@ -52,7 +52,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 ## Components
 Vagrantfile
     
-- Defines and creates our VMs, with host names, IP-addreses and resources. Generates key pairs. Installs Ansible and exposes port 443 for our webserver.
+- Defines and creates our VMs, with host names, IP-addreses and resources. Generates key pairs. Installs Ansible and clones Git Repo on the CA/ansible node.
 
 hosts.ini
     
@@ -62,13 +62,17 @@ site.yml
     
 - Automates our signing requests (CSR) and our certification (crt) as well as install and configure Nginx.
 
+ansible.cfg
+
+- Configuration for ```ansible-playbook``` that points to hosts.ini for simpler deployment.
+
 Role - Config
     
-- Configure certification.
+- Basic configuration for the CA, including setting up a self signing certificate.
 
 Role - CSR
     
-- Creates directory on webserver, generates webserver-key, creates certificate signing request (CSR) for new certificate and write CSR to file.
+- Creates directory on webserver, generates webserver-key, and a creates certificate signing request (CSR).
 
 Role - Nginx
     
@@ -76,7 +80,7 @@ Role - Nginx
 
 Role - Sign
     
-- Fetches CSR from webserver, copies CSR to CA. Checks for exsisting certificates and reads any that do. Signs CSR with our CA, and then writes certificate (crt) and sends back to webserver.
+- Fetches CSR from webserver, copies CSR to CA and signes the CSR. Sends the certificate back to the webserver(s).
 
 
 ## Requirements
@@ -86,10 +90,10 @@ Software requirements for host computer:
 - Git
 
 Hardware requirements for host computer:
-- X GB RAM
+- 2 GB RAM
 
 
-## Getting started - Set up/How to
+## How to use
 
 1. Clone repository
    
@@ -120,7 +124,7 @@ Hardware requirements for host computer:
    On host in browser: https://10.0.0.2
 
     Expected results:
-   If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure.
+   If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure but allow connection after explicitly telling it to. Static message should be visible.
 
 
 ## Security Discussion
@@ -146,3 +150,9 @@ We decided to reduce the amount of Virtual Machines, by combining the Ansible no
 In the current configuration, Vagrant creats two webservers. Due to declaring a list instead of specific hosts it's easy to add more webservers and keep the overall configuration.
 
 Our Ansible playbook is written in a way where tasks are repeated an appropriate amount based on how many webservers there are. One needs to manually add the additional webservers to the Hosts.ini file, but the rest is automated.
+
+---
+Created by: Anna Wuolo & Sayla Persson
+Course: Virtualiseringsteknik
+School: Yrkeshögskolan Enköping
+Date: 2026-05-22
