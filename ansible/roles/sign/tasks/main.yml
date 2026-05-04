@@ -23,8 +23,8 @@
   loop: "{{ groups['webserver'] }}"
 
 - name: Sign certificate with our CA
-  community.crypto.x509_certificate:        # ← use x509_certificate not _pipe
-    path: /opt/ca/{{ item }}_certificate.crt  # writes to file, skips if valid
+  community.crypto.x509_certificate:
+    path: /opt/ca/{{ item }}_certificate.crt
     csr_path: /opt/ca/{{ item }}_webserver.csr
     provider: ownca
     ownca_path: /opt/ca/ca.crt
@@ -36,7 +36,7 @@
 
 - name: Copy certificate to Webserver
   copy:
-    src: /opt/ca/{{ item }}_certificate.crt    # ← read from file on CA
+    src: /opt/ca/{{ item }}_certificate.crt
     dest: /opt/ca/certificate.crt
     mode: '0644'
   delegate_to: "{{ item }}"

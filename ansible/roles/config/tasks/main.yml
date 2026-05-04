@@ -11,7 +11,7 @@
     state: directory
     mode: '0755'
 
-- name: Generate CA-key #(RSA 4096 bits)
+- name: Generate CA-key
   community.crypto.openssl_privatekey:
     path: /opt/ca/ca.key
 
