@@ -22,7 +22,7 @@
 
            location / {
             add_header Content-Type text/plain;
-            return 200 'Hello from webserver.lab.local over HTTPS!\nWe appear to have succeeded with what we attempted to do! :D';
+            return 200 'Hello from webserver.lab.local over HTTPS!\nIt appears we have succeeded with what we attempted to do! :D';
           }
         }
 
