@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
 
 		ca.vm.provision "shell", inline: <<-SHELL
       		apt-get update -y
-      		apt-get install -y ansible
+      		apt-get install -y ansible git
 
       	# Generate SSH keys 
       		sudo -u vagrant ssh-keygen -t ed25519 \
@@ -35,6 +35,10 @@ Vagrant.configure("2") do |config|
       		cp /home/vagrant/.ssh/id_ed25519.pub \
          	/vagrant/ansible_id_ed25519.pub
 
+		# Clone in Git Repo
+			  sudo -u vagrant git clone https://github.com/Fili-git/Virtualiseringsteknik.git \
+    /home/vagrant/Virtualiseringsteknik
+		
       		echo "=== CA done ==="
     	SHELL
 	end #End VM1
