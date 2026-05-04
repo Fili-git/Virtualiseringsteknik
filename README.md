@@ -108,13 +108,11 @@ Hardware requirements for host computer:
 
     ```Git clone https://github.com/Fili-git/Virtualiseringsteknik.git```
    
-    ```cd ~/Virtualiseringsteknik```
+    ```cd ~/Virtualiseringsteknik/ansible```
    
-    ```ansible-playbook -i ansible/hosts.ini ansible/site.yml```
-6. Verification script?
+    ```ansible-playbook site.yml```
    
-   ex. bash test/verify.sh
-8. Trust the CA
+8. Trust the CA (optional)
 
     ```cp /opt/ca/ca.crt /vagrant/ca.crt``` on CA VM.
 
@@ -124,7 +122,7 @@ Hardware requirements for host computer:
    https://10.0.0.2
 
     Expected results:
-   User should be able to access the url and read the message without any security warnings. If step 6 haven't been done, the browser should claim the connection is insecure.
+   If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure.
 
 
 ## Security Discussion
