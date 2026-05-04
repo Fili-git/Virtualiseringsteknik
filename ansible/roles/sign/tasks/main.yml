@@ -1,5 +1,5 @@
 ---
-- name: Create /opt/ca on webserver
+- name: Create /opt/ca on Webserver
   file:
     path: /opt/ca
     state: directory
@@ -7,7 +7,7 @@
   delegate_to: "{{ item }}"
   loop: "{{ groups['webserver'] }}"
 
-- name: Fetch CSR from webserver
+- name: Fetch CSR from Webserver
   fetch:
     src: /opt/ca/webserver.csr
     dest: /tmp/{{ item }}_webserver.csr
@@ -34,7 +34,7 @@
   loop: "{{ groups['webserver'] }}"
   register: certificates
 
-- name: Copy certificate to webserver
+- name: Copy certificate to Webserver
   copy:
     src: /opt/ca/{{ item }}_certificate.crt    # ← read from file on CA
     dest: /opt/ca/certificate.crt

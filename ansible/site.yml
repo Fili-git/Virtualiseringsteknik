@@ -17,7 +17,7 @@
   roles:
     - sign
 
-- name: Install and configure nginx
+- name: Install and configure Nginx
   hosts: webserver
   become: yes
   roles:

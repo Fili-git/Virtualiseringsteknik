@@ -8,7 +8,7 @@
   community.crypto.openssl_privatekey:
     path: /opt/ca/webserver.key
 
-- name: Create certificate signing request (CSR)
+- name: Create Certificate Signing Request (CSR)
   community.crypto.openssl_csr:
     path: /opt/ca/webserver.csr
     privatekey_path: /opt/ca/webserver.key
