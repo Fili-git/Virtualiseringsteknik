@@ -15,18 +15,18 @@
   community.crypto.openssl_privatekey:
     path: /opt/ca/ca.key
 
-- name: Generate CA CSR 
-  community.crypto.openssl_csr_pipe:
+- name: Generate CA CSR
+  community.crypto.openssl_csr:
+    path: /opt/ca/ca.csr
     privatekey_path: /opt/ca/ca.key
     common_name: Lab Internal CA
     organization_name: Lab
     country_name: SE
-  register: ca_csr 
 
-- name: Create simple self-signed certificate  
-  community.crypto.x509_certificate:    
-    path: /opt/ca/ca.crt    
+- name: Create simple self-signed certificate
+  community.crypto.x509_certificate:
+    path: /opt/ca/ca.crt
     privatekey_path: /opt/ca/ca.key
-    csr_content: "{{ ca_csr.csr }}"   
-    provider: selfsigned  
+    csr_path: /opt/ca/ca.csr
+    provider: selfsigned
 
