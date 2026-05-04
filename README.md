@@ -152,7 +152,7 @@ In the current configuration, Vagrant creats two webservers. Due to declaring a 
 Our Ansible playbook is written in a way where tasks are repeated an appropriate amount based on how many webservers there are. One needs to manually add the additional webservers to the Hosts.ini file, but the rest is automated.
 
 ---
-Created by: Anna Wuolo & Sayla Persson
-Course: Virtualiseringsteknik
-School: Yrkeshögskolan Enköping
+Created by: Anna Wuolo & Sayla Persson <br>
+Course: Virtualiseringsteknik <br>
+School: Yrkeshögskolan Enköping <br>
 Date: 2026-05-22
