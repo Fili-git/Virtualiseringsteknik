@@ -14,8 +14,6 @@
 - name: Generate CA-key #(RSA 4096 bits)
   community.crypto.openssl_privatekey:
     path: /opt/ca/ca.key
-  run_once: true
-
 
 - name: Generate CA CSR 
   community.crypto.openssl_csr_pipe:

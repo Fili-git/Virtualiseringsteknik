@@ -9,16 +9,10 @@
     path: /opt/ca/webserver.key
 
 - name: Create certificate signing request (CSR)
-  community.crypto.openssl_csr_pipe:
+  community.crypto.openssl_csr:
+    path: /opt/ca/webserver.csr
     privatekey_path: /opt/ca/webserver.key
     common_name: webserver.lab.local
     subject_alt_name:
       - "DNS:webserver.lab.local"
-      - "IP:{{ ansible_host }}"   # dynamic, not hardcoded
-  register: csr
-
-- name: Write CSR to file
-  copy:
-    dest: /opt/ca/webserver.csr
-    content: "{{ csr.csr }}"
-    mode: '0644'
+      - "IP:{{ ansible_host }}"

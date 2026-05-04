@@ -1,4 +1,12 @@
 ---
+- name: Create /opt/ca on webserver
+  file:
+    path: /opt/ca
+    state: directory
+    mode: '0755'
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['webserver'] }}"
+
 - name: Fetch CSR from webserver
   fetch:
     src: /opt/ca/webserver.csr
@@ -14,24 +22,10 @@
     mode: '0644'
   loop: "{{ groups['webserver'] }}"
 
-- name: Check whether certificate exists
-  stat:
-    path: /opt/ca/{{ item }}_certificate.crt
-  register: certificate_exists
-  loop: "{{ groups['webserver'] }}"
-
-- name: Read existing certificate if exists
-  slurp:
-    src: /opt/ca/{{ item }}_certificate.crt
-  when: certificate_exists.results[loop_index].stat.exists
-  loop: "{{ groups['webserver'] }}"
-  loop_control:
-    index_var: loop_index
-  register: certificate
-
 - name: Sign certificate with our CA
-  community.crypto.x509_certificate_pipe:
-    csr_content: "{{ lookup('file', '/opt/ca/' + item + '_webserver.csr') }}"
+  community.crypto.x509_certificate:        # ← use x509_certificate not _pipe
+    path: /opt/ca/{{ item }}_certificate.crt  # writes to file, skips if valid
+    csr_path: /opt/ca/{{ item }}_webserver.csr
     provider: ownca
     ownca_path: /opt/ca/ca.crt
     ownca_privatekey_path: /opt/ca/ca.key
@@ -40,7 +34,7 @@
   loop: "{{ groups['webserver'] }}"
   register: certificates
 
-- name: Write certificate file on webserver
+- name: Write certificate to webserver
   copy:
     dest: /opt/ca/certificate.crt
     content: "{{ certificates.results[loop_index].certificate }}"
@@ -48,4 +42,4 @@
   loop: "{{ groups['webserver'] }}"
   loop_control:
     index_var: loop_index
-  #when: certificate is changed
+  when: certificates.results[loop_index] is changed
