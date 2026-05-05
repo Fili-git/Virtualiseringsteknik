@@ -90,7 +90,7 @@ Software requirements for host computer:
 - Git
 
 Hardware requirements for host computer:
-- 2 GB RAM
+- 4 GB RAM
 
 
 ## How to use
