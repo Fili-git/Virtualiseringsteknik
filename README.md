@@ -114,17 +114,17 @@ Hardware requirements for host computer:
    
    On CA: ```ansible-playbook site.yml```
    
-8. Trust the CA (optional)
+5. Trust the CA (optional)
 
    On CA: ```cp /opt/ca/ca.crt /vagrant/ca.crt```
 
    On host: Install the certificate into Trusted Root Certification Authoritites.
-9. Go onto the webserver
+6. Verify configuration
    
-   On host in browser: https://10.0.0.2
+   On host in browser, go to: https://10.0.0.2 or https://10.0.0.3
 
     Expected results:
-   If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure but allow connection after explicitly telling it to. Static message should be visible.
+   If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure but allow connection after explicitly telling it to. The message should display the associated IP address.
 
 
 ## Security Discussion
