@@ -96,35 +96,23 @@ Hardware requirements for host computer:
 ## How to use
 
 1. Clone repository
-   
-   On host: ```Git clone git@github.com:Fili-git/Virtualiseringsteknik.git```
-   
-   On host: ```cd /Virtualiseringsteknik```
-3. Start all VMs
-
-   On host: ```cd vagrant```
-   
-   On host: ```vagrant up```
+   <br>On host: ```Git clone git@github.com:Fili-git/Virtualiseringsteknik.git```
+   <br>On host: ```cd /Virtualiseringsteknik```
+2. Start all VMs
+ <br>On host: ```cd vagrant```
+ <br>On host: ```vagrant up```
 3. SSH into CA
-
-   On host: ```vagrant ssh ca```
+ <br>On host: ```vagrant ssh ca```
 4. Run ansible-playbook
-   
-   On CA: ```cd ~/Virtualiseringsteknik/ansible```
-   
-   On CA: ```ansible-playbook site.yml```
-   
+ <br>On CA: ```cd ~/Virtualiseringsteknik/ansible```
+ <br>On CA: ```ansible-playbook site.yml```
 5. Trust the CA (optional)
-
-   On CA: ```cp /opt/ca/ca.crt /vagrant/ca.crt```
-
-   On host: Install the certificate into Trusted Root Certification Authoritites.
+   <br>On CA: ```cp /opt/ca/ca.crt /vagrant/ca.crt```
+   <br>On host: Install the certificate into Trusted Root Certification Authoritites.
 6. Verify configuration
-   
-   On host in browser, go to: https://10.0.0.2 or https://10.0.0.3
-
-    Expected results:
-   If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure but allow connection after explicitly telling it to. The message should display the associated IP address.
+   <br>On host in browser, go to: https://10.0.0.2 or https://10.0.0.3
+   <br>**Expected results:**
+   <br>If optional step is done, user should be able to access the url and read the message without any security warnings. If not, the browser should claim the connection is insecure but allow connection after explicitly telling it to. The message should display the associated IP address.
 
 
 ## Security Discussion
@@ -139,12 +127,6 @@ Installing a root certificate on a host establishes a chain of trust through the
 
 If a company would choose to do this kind of setup with manually installing certificates on each and every relevant host, they also need to make sure that all certificates are up to date and correct.
 
-### Certificate Lifecycle/Revocation
-No currently implemented ways of revoking a certificate, for example, if the private key has been compromised. Currently, the only way is to wait for it to expire. To fix this in a production setting, a Certificate Revocation List or an OCSP endpoint needs to be configured.
-
-### Key distribution
-Should go through a secrets manager such as HashiCorp Vault instead of the current shared file setup. As it is now, the CA handles the webserver key during the signing process, which is a security risk. In a real production environment the private keys should never leave their associated machine. Instead only the CSR should be shared between the webserver and the CA.
-
 ### Single Point Failure - CA VM
 The CA VM acts as both our Certificate Authority and our Ansible controller, which if compromised or fails would break both the PKI and automation simultaneously. In a real or large-scale environment, one should separate these two into independent VMs. 
 
@@ -152,6 +134,11 @@ Our keys also exist on the CA and have SSH access to other VMs. In a real-life s
 
 Currently, Ansible playbook uses many root privileges for its tasks. In a real production, we would limit these to only the tasks that need it, such as installing packages. Running everything from root increases the potential damage if something goes wrong or is compromised.
 
+### Key distribution
+Should go through a secrets manager such as HashiCorp Vault instead of the current shared file setup. As it is now, the CA handles the webserver key during the signing process, which is a security risk. In a real production environment the private keys should never leave their associated machine. Instead only the CSR should be shared between the webserver and the CA.
+
+### Certificate Lifecycle/Revocation
+No currently implemented ways of revoking a certificate, for example, if the private key has been compromised. Currently, the only way is to wait for it to expire. To fix this in a production setting, a Certificate Revocation List or an OCSP endpoint needs to be configured.
 
 ## Design choices and motivation
 ### Development
@@ -161,10 +148,10 @@ In our earlier development, we had all Ansible tasks in the same file. After tes
 We have choosen to keep it simple and contained for educational purposes, and lessen the risk of making it to large and out of scope. We wanted to focus our time on understanding and learning more about the modules we have implemented. We choose to use Nginx over Python due to our own lack of experience with programming, Nginx was thus more beginner friendly for use in this project. Since we also didn't need to learn a completely new programming language.
 
 ### IP Addresses
-The IP addresses are choosen for readability, rather than functionality. We decided to use 10.0.0.x in order to have a clear overview, make errors more visible to detect and testing easier. In a proper production, it would be more appropriate to use other IP addresses.
+The IP addresses are choosen for readability, rather than functionality. We decided to use 10.0.0.x in order to have a clear overview, make errors more visible to detect and testing easier. In a proper production, it would be more appropriate to use other IP addresses since the 10.X.X.X is internal.
 
 ### Virtual Machines
-We decided to reduce the amount of Virtual Machines, by combining the Ansible node with our Certificate Authority. With found it unnecessary to have a single VM running Ansible and taking up resources. On a larger scale it can be beneficial to keep them seperate. This requires small changes to how the site.yml runs, since it's currently pointing towards localhost instead of CA.
+We decided to reduce the amount of Virtual Machines, by combining the Ansible node with our Certificate Authority. With found it unnecessary to have a single VM running Ansible and taking up resources. On a larger scale it can be beneficial and more secure to keep them seperate. This requires small changes to how the site.yml runs, since it's currently pointing towards localhost instead of CA.
 
 ### Scalability
 In the current configuration, Vagrant creats two webservers. Due to declaring a list instead of specific hosts it's easy to add more webservers and keep the overall configuration.
