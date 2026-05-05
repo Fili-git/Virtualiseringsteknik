@@ -3,7 +3,7 @@
 CA_IP = "10.0.0.1"
 WEBSERVERS = [
   { name: "webserver1", ip: "10.0.0.2" },
-  { name: "webserver2", ip: "10.0.0.3" },
+  { name: "webserver2", ip: "10.0.0.3" }, 
 ]
 
 MEMORY = "1024"
