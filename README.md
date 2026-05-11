@@ -8,7 +8,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 - [Folder structure](#Folder-structure)
 - [Components](#Components)
 - [Requirements](#Requirements)
-- [Getting started](#Getting-started)
+- [How to use](#How-to-use)
 - [Security Discussion](#Security-Discussion)
 - [Design choices and motivation](#Design-choices-and-motivation)
 
