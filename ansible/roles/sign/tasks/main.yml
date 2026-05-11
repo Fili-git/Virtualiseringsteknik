@@ -34,7 +34,6 @@
     extended_key_usage:
       - serverAuth
     extended_key_usage_strict: false
-    force: true
   loop: "{{ groups['webserver'] }}"
   register: certificates
 
