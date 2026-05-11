@@ -26,27 +26,31 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 | Webserver2 | Webserver      | 10.0.0.3 |Webserver hosted by Nginx.
 
 ## Folder structure
-    +---ansible
-    |   \---roles
-    |       +---config
-    |       |   \---tasks
-    |       +---csr
-    |       |   \---tasks
-    |       +---nginx
-    |       |   +---handlers
-    |       |   \---tasks
-    |       \---sign
-    |           \---tasks
-    \---vagrant
-        \---.vagrant
-            +---machines
-            |   +---ca
-            |   |   \---virtualbox
-            |   +---webserver1
-            |   |   \---virtualbox
-            |   \---webserver2
-            |       \---virtualbox
-            \---rgloader
+|   .gitignore
+|   README.md
+|   Virtualiseringsteknik.png
++---ansible
+|   |   ansible.cfg
+|   |   hosts.ini
+|   |   site.yml
+|   \---roles
+|       +---config
+|       |   \---tasks
+|       |           main.yml
+|       +---csr
+|       |   \---tasks
+|       |           main.yml
+|       +---nginx
+|       |   +---handlers
+|       |   |       main.yml
+|       |   \---tasks
+|       |           main.yml
+|       \---sign
+|           \---tasks
+|                   main.yml
+\---vagrant
+    |   Vagrantfile
+    \---.vagrant
 
 
 ## Components
