@@ -26,6 +26,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 | Webserver2 | Webserver      | 10.0.0.3 |Webserver hosted by Nginx.
 
 ## Folder structure
+```
 |   .gitignore
 |   README.md
 |   Virtualiseringsteknik.png
@@ -51,8 +52,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 \---vagrant
     |   Vagrantfile
     \---.vagrant
-
-
+```
 ## Components
 Vagrantfile
     
