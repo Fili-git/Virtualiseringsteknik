@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
 		ca.vm.network "private_network", ip: CA_IP
 		ca.vm.provider "virtualbox" do |vb|
 			vb.name = "ca"
-			vb.memory = MEMORY
+			vb.memory = "2048"
 			vb.cpus = CPU
 		end #ends VB-conf
 
