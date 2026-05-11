@@ -31,9 +31,6 @@
     ownca_privatekey_path: /opt/ca/ca.key
     ownca_not_after: +365d
     ownca_not_before: "-1d"
-    extended_key_usage:
-      - serverAuth
-    extended_key_usage_strict: false
   loop: "{{ groups['webserver'] }}"
   register: certificates
 
