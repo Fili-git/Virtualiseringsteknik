@@ -94,7 +94,7 @@ Software requirements for host computer:
 - Git
 
 Hardware requirements for host computer:
-- 4 GB RAM
+- 4 GB RAM available.
 
 
 ## How to use
@@ -179,7 +179,7 @@ We have chosen to keep it simple and contained for educational purposes, and les
 The IP addresses are chosen for readability, rather than functionality. We decided to use 10.0.0.x in order to have a clear overview, make errors more visible to detect and testing easier. In a proper production, it would be more appropriate to use other IP addresses since the 10.x.x.x is internal.
 
 ### Virtual Machines
-We decided to reduce the amount of Virtual Machines, by combining the Ansible node with our Certificate Authority. We found it unnecessary to have a single VM running Ansible and taking up resources. On a larger scale it can be beneficial and more secure to keep them separate for optimization reasons as well as the security reasons, we touched more on this in our security discussion. This requires small changes to the site.yml ```hosts: localhost``` needs to be changed to ```hosts: CA``` instead.
+We decided to reduce the amount of Virtual Machines, by combining the Ansible node with our Certificate Authority. We found it unnecessary to have a single VM running Ansible and taking up resources. On a larger scale it can be beneficial and more secure to keep them separate for optimization reasons as well as the security reasons, we touched more on this in our security discussion. This requires small changes to the site.yml, ```hosts: localhost``` needs to be changed to ```hosts: CA``` instead.
 
 The RAM assigned to each VM has been chosen from an efficiency point of view, even though they might seem unnecessarily large. We prioritized time over resources to reduce the amount of time we had to wait for downloads and configurations to happen, as we had available computers with the capacity to host and run the machines and needed to test our projects multiple times during limited hours. For a larger production, we highly recommend looking over the assigned RAM and maybe decrease it, based on that project's scope, requirements and resources.
 
