@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
 
 		# Clone in Git Repo
 			  sudo -u vagrant git clone https://github.com/Fili-git/Virtualiseringsteknik.git \
-    /home/vagrant/Virtualiseringsteknik
+    			/home/vagrant/Virtualiseringsteknik
 		
       		echo "=== CA done ==="
     	SHELL
@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
 			web.vm.network "private_network", ip: ws[:ip]
 			web.vm.provider "virtualbox" do |vb|
 				vb.name = ws[:name]
-				vb.memory = MEMORY
+				vb.memory = MEMORYWS
 				vb.cpus = CPU
 			end #End VB-conf
 
