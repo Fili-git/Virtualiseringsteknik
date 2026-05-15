@@ -6,7 +6,7 @@ WEBSERVERS = [
   { name: "webserver2", ip: "10.0.0.3" }, 
 ]
 
-MEMORYCS = "2048"
+MEMORYCA = "2048"
 MEMORYWS = "1024"
 CPU = "1"
 
