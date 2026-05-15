@@ -29,7 +29,7 @@ An internal Certificate Authority (CA) which manages and issues certifications f
 ```
 |   .gitignore
 |   README.md
-|   Virtualiseringsteknik.png
+|   Virtualiseringsteknik Diagram.png
 +---ansible
 |   |   ansible.cfg
 |   |   hosts.ini
