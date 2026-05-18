@@ -1,5 +1,5 @@
 # Certificate Authority
-An internal Certificate Authority (CA) which manages and issues certifications for internal services. While a Webserver using HTTPS, sends Certificate Signing Request (CSR) and recieves a signed certificate (crt).
+An internal Certificate Authority (CA) which manages and issues certifications for internal services. Webserver(s) using HTTPS, sends Certificate Signing Request (CSR) and recieves a signed certificate (crt).
 
 
 ## Table of Contents
