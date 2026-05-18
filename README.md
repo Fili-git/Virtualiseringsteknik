@@ -186,7 +186,7 @@ The RAM assigned to each VM has been chosen from an efficiency point of view, ev
 ### Scalability
 In the current configuration, Vagrant creates two web servers. Due to declaring a list instead of specific hosts it's easy to add more web servers and let Vagrant create more virtual machines with the same baseline configuration.
 
-The Ansible Playbook calls for different tasks, which are written to repeat an appropriate amount based on how many web servers are listed. If one adds more virtual machines to the Vagrant code, the same machines need to be manually added to the Hosts.ini file to include them in the playbook.
+The Ansible Playbook calls for multiple tasks, which are written to repeat an appropriate amount based on how many web servers are listed. If one adds more virtual machines to the Vagrant code, the same machines need to be manually added to the Hosts.ini file to include them in the playbook.
 
 ---
 Created by: Anna Wuolo & Sayla Persson <br>
