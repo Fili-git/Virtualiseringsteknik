@@ -132,6 +132,10 @@ One would also like to revoke a certificate if the website is being shut down, t
 
 We chose to not include a way for certificate revocation in this project due to the scope of the assignment. To implement it in a production setting, one could use either a Certificate Revocation List or an OCSP endpoint.
 
+A CRL works by listing all certificates that have been revoked, or put on hold, and can be cross-referenced against. According to best practice, this cross-reference should happen whenever an endpoint user wants to rely and make use of a certificate.
+
+OCSP works similarly by keeping a list of the revocation status of digital certificates. When an endpoint user wants to check their certificate, an OCSP request is sent to an OCSP server that responds with either “good”, “revoked” or “unknown”. Even though an OCSP server uses less resources to uphold, it creates a possible security risk since the “good” response can be copied and used for replay attacks.
+
 ### Key distribution
 Should go through a secrets manager such as HashiCorp Vault instead of the current shared file setup. As it is now, the CA handles the webserver key during the signing process through /tmp/, which means that it briefly exists in two places at the same time. In a real production environment the private keys should never leave their associated machine. Instead only the CSR should be shared between the webserver and the CA.
 
